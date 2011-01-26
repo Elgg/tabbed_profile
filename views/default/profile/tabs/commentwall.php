@@ -3,7 +3,7 @@
  * Elgg profile comment wall
  */
 
-$user = elgg_get_page_owner();
+$user = elgg_get_page_owner_entity();
 $comments = $user->getAnnotations('commentwall', 200, 0, 'desc');
 
 if (isloggedin()) {

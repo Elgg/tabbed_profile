@@ -1,22 +1,21 @@
 <?php
 /**
- * Elgg profile plugin
+ * Elgg tabbed profile plugin
  *
- * @package ElggProfile
+ * @package ElggTabbedProfile
  */
 
-elgg_register_event_handler('init', 'system', 'profile_init', 1);
+elgg_register_event_handler('init', 'system', 'tabbed_profile_init');
 
 /**
- * Profile init function; sets up the profile functions
- *
+ * Profile init function
  */
-function profile_init() {
+function tabbed_profile_init() {
 	global $CONFIG;
 
 	// Register a URL handler for users - this means that profile_url()
 	// will dictate the URL for all ElggUser objects
-	register_entity_url_handler('profile_url', 'user', 'all');
+	register_entity_url_handler('tabbed_profile_url', 'user', 'all');
 
 	// Metadata on users needs to be independent
 	register_metadata_as_independent('user');
@@ -29,7 +28,7 @@ function profile_init() {
 	elgg_view_register_simplecache('icon/user/default/master');
 
 	// Register a page handler, so we can have nice URLs
-	register_page_handler('profile', 'profile_page_handler');
+	register_page_handler('profile', 'tabbed_profile_page_handler');
 
 	elgg_extend_view('html_head/extend', 'profile/metatags');
 	elgg_extend_view('css/screen', 'profile/css');
@@ -41,7 +40,7 @@ function profile_init() {
 	elgg_register_event_handler('profileupdate', 'all', 'object_notifications');
 	
 	// allow ECML in parts of the profile
-	elgg_register_plugin_hook_handler('get_views', 'ecml', 'profile_ecml_views_hook');
+	elgg_register_plugin_hook_handler('get_views', 'ecml', 'tabbed_profile_ecml_views_hook');
 }
 
 /**
@@ -49,7 +48,7 @@ function profile_init() {
  *
  * @param array $page Array of page elements, forwarded by the page handling mechanism
  */
-function profile_page_handler($page) {
+function tabbed_profile_page_handler($page) {
 	global $CONFIG;
 
 	if (isset($page[0])) {
@@ -82,7 +81,7 @@ function profile_page_handler($page) {
 			} else {
 				$section = 'activity';
 			}
-			$content = profile_get_user_profile_html($user, $section);
+			$content = tabbed_profile_get_user_profile_html($user, $section);
 			$content = elgg_view_layout('one_column', array('content' => $content));
 			break;
 	}
@@ -100,7 +99,7 @@ function profile_page_handler($page) {
  *
  * @return mixed FALSE or html for the profile.
  */
-function profile_get_user_profile_html($user, $section = 'activity') {
+function tabbed_profile_get_user_profile_html($user, $section = 'activity') {
 	$body = elgg_view('profile/tab_navigation', array('section' => $section, 'entity' => $user));
 	$view_options = array('entity' => $user);
 
@@ -118,7 +117,7 @@ function profile_get_user_profile_html($user, $section = 'activity') {
  * @param ElggUser $user
  * @return string User URL
  */
-function profile_url($user) {
+function tabbed_profile_url($user) {
 	return elgg_get_site_url() . "pg/profile/" . $user->username;
 }
 
@@ -130,7 +129,7 @@ function profile_url($user) {
  * @param unknown_type $return_value
  * @param unknown_type $params
  */
-function profile_ecml_views_hook($hook, $entity_type, $return_value, $params) {
+function tabbed_profile_ecml_views_hook($hook, $entity_type, $return_value, $params) {
 	$return_value['profile/profile_content'] = elgg_echo('profile');
 
 	return $return_value;

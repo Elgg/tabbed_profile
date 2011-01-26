@@ -12,7 +12,7 @@ if ($vars['entity']) {
 		$user = get_entity($vars['entity']->guid);
 	}
 } else {
-	$user = elgg_get_page_owner();
+	$user = elgg_get_page_owner_entity();
 }
 if (!$user) {
 	// no user so we quit view

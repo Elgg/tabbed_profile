@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin_manifest>
-	<field key="author" value="Curverider ltd" />
-	<field key="version" value="1.8" />
-	<field key="category" value="bundled" />
-	<field key="category" value="social" />
-	<field key="description" value="Elgg profile plugin." />
-	<field key="website" value="http://www.elgg.org/" />
-	<field key="copyright" value="(C) Curverider 2008-2010" />
-	<field key="licence" value="GNU Public License version 2" />
-	<field key="elgg_version" value="2010030101" />
-	<field key="admin_interface" value="advanced" />
+<plugin_manifest version="1.8">
+	<name>Tabbed Profile</name>
+	<author>Curverider Ltd</author>
+	<version>1.8</version>
+	<blurb>Tabbed profile</blurb>
+	<description>Profile with tabs that organize an user's information</description>
+	<website>http://www.elgg.org/</website>
+	<copyright>(C) Curverider 2008-2010</copyright>
+	<license>GNU Public License version 2</license>
+	<category>social</category>
+	<admin_interface>advanced</admin_interface>
+
+	<requires>
+		<type>elgg_version</type>
+		<version>2010030101</version>
+	</requires>
+
 </plugin_manifest>
