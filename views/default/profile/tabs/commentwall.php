@@ -3,11 +3,13 @@
  * Elgg profile comment wall
  */
 
-$user = elgg_get_page_owner_entity();
-$comments = $user->getAnnotations('commentwall', 200, 0, 'desc');
-
 if (isloggedin()) {
-	echo elgg_view("profile/commentwall/commentwalladd");
+	echo elgg_view_form('commentwall/add');
 }
 
-echo elgg_view("profile/commentwall/commentwall", array('annotation' => $comments));
+$list = list_annotations(elgg_get_page_owner_guid(), 'commentwall', 20, false);
+if (!$list) {
+	$list = '<p>' . elgg_echo("profile:commentwall:none") . '</p>';
+}
+
+echo $list;

@@ -2,7 +2,7 @@
 /**
 * Elgg profile icon
 *
-* @package ElggProfile
+* @package ElggTabbedProfile
 */
 
 require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");

@@ -1,6 +1,6 @@
 <?php
 /**
- * Elgg user display (details)
+ * User activity
  * @uses $vars['entity'] The user entity
  */
 

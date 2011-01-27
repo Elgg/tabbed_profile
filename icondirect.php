@@ -3,7 +3,7 @@
 /**
  * Elgg profile icon cache/bypass
  * 
- * @package ElggProfile
+ * @package ElggTabbedProfile
  */
 
 

@@ -11,7 +11,6 @@ elgg_register_event_handler('init', 'system', 'tabbed_profile_init');
  * Profile init function
  */
 function tabbed_profile_init() {
-	global $CONFIG;
 
 	// Register a URL handler for users - this means that profile_url()
 	// will dictate the URL for all ElggUser objects
@@ -34,10 +33,9 @@ function tabbed_profile_init() {
 	elgg_extend_view('css/screen', 'profile/css');
 
 	// Register actions
-	elgg_register_action("profile/addcomment", $CONFIG->pluginspath . "tabbed_profile/actions/addcomment.php");
-	elgg_register_action("profile/deletecomment", $CONFIG->pluginspath . "tabbed_profile/actions/deletecomment.php");
-
-	elgg_register_event_handler('profileupdate', 'all', 'object_notifications');
+	$action_base = elgg_get_plugin_path() . 'tabbed_profile/actions/commentwall';
+	elgg_register_action("commentwall/add", "$action_base/add.php");
+	elgg_register_action("commentwall/delete", "$action_base/delete.php");
 	
 	// allow ECML in parts of the profile
 	elgg_register_plugin_hook_handler('get_views', 'ecml', 'tabbed_profile_ecml_views_hook');
@@ -81,34 +79,36 @@ function tabbed_profile_page_handler($page) {
 			} else {
 				$section = 'activity';
 			}
-			$content = tabbed_profile_get_user_profile_html($user, $section);
-			$content = elgg_view_layout('one_column', array('content' => $content));
+			$content = tabbed_profile_layout_page($user, $section);
+			$body = elgg_view_layout('one_column', array(
+				'content' => $content,
+				'class' => 'tabbed-profile',
+			));
 			break;
 	}
 
-	echo elgg_view_page($title, $content);
+	echo elgg_view_page($title, $body);
 }
 
 /**
- * Returns the html for a user profile.
+ * Layout the tabbed profile
  *
- * @param string $username The username of the profile to display
- * @param string $section Which section is currently selected.
+ * @param ElggUser $user      The user
+ * @param string   $selection Selected tab
  *
- * @todo - This should really use a plugin hook to get the list of plugin tabs
- *
- * @return mixed FALSE or html for the profile.
+ * @return string
  */
-function tabbed_profile_get_user_profile_html($user, $section = 'activity') {
-	$body = elgg_view('profile/tab_navigation', array('section' => $section, 'entity' => $user));
-	$view_options = array('entity' => $user);
+function tabbed_profile_layout_page($user, $selection = 'activity') {
 
-	$content = elgg_view("profile/tabs/$section", $view_options);
+	// allow other plugins to add tabs
+	$tabs = array('activity', 'details', 'friends', 'groups', 'commentwall');
+	$tabs = elgg_trigger_plugin_hook('tabs', 'profile', array('user' => $user), $tabs);
 
-	$body .= elgg_view('profile/content_wrapper', array('content' => $content));
-
-	$body .= elgg_view('profile/sidebar', array('section' => $section));
-	return $body;
+	return elgg_view('profile/layout', array(
+		'entity' => $user,
+		'selection' => $selection,
+		'tabs' => $tabs,
+	));
 }
 
 /**
@@ -122,11 +122,11 @@ function tabbed_profile_url($user) {
 }
 
 /**
- * Parse ECML on parts of the profile
+ * Register for ECML
  *
- * @param unknown_type $hook
- * @param unknown_type $entity_type
- * @param unknown_type $return_value
+ * @param string $hook
+ * @param string $entity_type
+ * @param array  $return_value
  * @param unknown_type $params
  */
 function tabbed_profile_ecml_views_hook($hook, $entity_type, $return_value, $params) {

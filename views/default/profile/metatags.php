@@ -2,8 +2,7 @@
 /**
  * FOAF
  * 
- * @package ElggProfile
- * 
+ * @package ElggTabbedProfile
  */
 
 if (elgg_get_page_owner_guid()) {
