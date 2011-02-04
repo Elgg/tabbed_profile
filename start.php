@@ -33,10 +33,10 @@ function tabbed_profile_init() {
 	elgg_extend_view('css/screen', 'profile/css');
 
 	// Register actions
-	$action_base = elgg_get_plugin_path() . 'tabbed_profile/actions/commentwall';
+	$action_base = elgg_get_plugins_path() . 'tabbed_profile/actions/commentwall';
 	elgg_register_action("commentwall/add", "$action_base/add.php");
 	elgg_register_action("commentwall/delete", "$action_base/delete.php");
-	
+
 	// allow ECML in parts of the profile
 	elgg_register_plugin_hook_handler('get_views', 'ecml', 'tabbed_profile_ecml_views_hook');
 }
