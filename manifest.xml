@@ -11,6 +11,11 @@
 	<category>social</category>
 	<admin_interface>advanced</admin_interface>
 
+	<screenshot>
+		<path>screenshots/ss1.png</path>
+		<description>The tabbed profile</description>
+	</screenshot>
+
 	<requires>
 		<type>elgg_version</type>
 		<version>2010030101</version>
@@ -19,7 +24,6 @@
 	<conflicts>
 		<type>plugin</type>
 		<name>profile</name>
-		<version>1.8</version>
 	</conflicts>
 
 </plugin_manifest>
