@@ -8,7 +8,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
 // Get the owning user
-$user = elgg_get_page_owner();
+$user = elgg_get_page_owner_entity();
 
 // Get the size
 $size = strtolower(get_input('size'));
@@ -35,9 +35,8 @@ if ($filehandler->open("read")) {
 }
 
 if (!$success) {
-	global $CONFIG;
-	$path = elgg_view('icon/user/default/'.$size);
-	header("Location: {$path}");
+	$path = elgg_view("icon/user/default/$size");
+	header("Location: $path");
 	exit;
 }
 

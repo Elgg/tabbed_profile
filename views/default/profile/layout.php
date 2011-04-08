@@ -15,4 +15,4 @@ echo "<div class=\"profile-tab profile-tab-$selection\">";
 echo elgg_view("profile/tabs/$selection", $vars);
 echo '</div>';
 
-echo elgg_view('profile/ownerblock', $vars);
+echo elgg_view('profile/owner_block', $vars);

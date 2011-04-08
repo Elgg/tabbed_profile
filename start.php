@@ -14,23 +14,23 @@ function tabbed_profile_init() {
 
 	// Register a URL handler for users - this means that profile_url()
 	// will dictate the URL for all ElggUser objects
-	register_entity_url_handler('tabbed_profile_url', 'user', 'all');
+	elgg_register_entity_url_handler('user', 'all', 'tabbed_profile_url');
 
 	// Metadata on users needs to be independent
 	register_metadata_as_independent('user');
 
-	elgg_view_register_simplecache('icon/user/default/tiny');
-	elgg_view_register_simplecache('icon/user/default/topbar');
-	elgg_view_register_simplecache('icon/user/default/small');
-	elgg_view_register_simplecache('icon/user/default/medium');
-	elgg_view_register_simplecache('icon/user/default/large');
-	elgg_view_register_simplecache('icon/user/default/master');
+	elgg_register_simplecache_view('icon/user/default/tiny');
+	elgg_register_simplecache_view('icon/user/default/topbar');
+	elgg_register_simplecache_view('icon/user/default/small');
+	elgg_register_simplecache_view('icon/user/default/medium');
+	elgg_register_simplecache_view('icon/user/default/large');
+	elgg_register_simplecache_view('icon/user/default/master');
 
 	// Register a page handler, so we can have nice URLs
-	register_page_handler('profile', 'tabbed_profile_page_handler');
+	elgg_register_page_handler('profile', 'tabbed_profile_page_handler');
 
 	elgg_extend_view('html_head/extend', 'profile/metatags');
-	elgg_extend_view('css/screen', 'profile/css');
+	elgg_extend_view('css/elgg', 'profile/css');
 
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'tabbed_profile/actions/commentwall';
@@ -56,7 +56,7 @@ function tabbed_profile_page_handler($page) {
 	}
 
 	// short circuit if invalid or banned username
-	if (!$user || ($user->isBanned() && !isadminloggedin())) {
+	if (!$user || ($user->isBanned() && !elgg_is_admin_logged_in())) {
 		register_error(elgg_echo('profile:notfound'));
 		forward();
 	}
