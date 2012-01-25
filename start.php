@@ -38,6 +38,9 @@ function tabbed_profile_init() {
 	elgg_register_action("commentwall/add", "$action_base/add.php");
 	elgg_register_action("commentwall/delete", "$action_base/delete.php");
 
+	// Register a menu handler for commentwall annotations
+	elgg_register_plugin_hook_handler('register', 'menu:annotation', 'tabbed_profile_annotation_menu_setup');
+
 	// allow ECML in parts of the profile
 	elgg_register_plugin_hook_handler('get_views', 'ecml', 'tabbed_profile_ecml_views_hook');
 }
@@ -134,4 +137,29 @@ function tabbed_profile_ecml_views_hook($hook, $entity_type, $return_value, $par
 	$return_value['profile/profile_content'] = elgg_echo('profile');
 
 	return $return_value;
+}
+
+/**
+ * Adds a delete link to "commentwall" annotations
+ * @access private
+ */
+function tabbed_profile_annotation_menu_setup($hook, $type, $return, $params) {
+	$annotation = $params['annotation'];
+
+	if ($annotation->name == 'commentwall' && $annotation->canEdit()) {
+		$url = elgg_http_add_url_query_elements('action/commentwall/delete', array(
+			'annotation_id' => $annotation->id,
+		));
+
+		$options = array(
+			'name' => 'delete',
+			'href' => $url,
+			'text' => "<span class=\"elgg-icon elgg-icon-delete\"></span>",
+			'confirm' => elgg_echo('deleteconfirm'),
+			'encode_text' => false
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+
+	return $return;
 }
