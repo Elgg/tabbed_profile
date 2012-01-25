@@ -30,7 +30,7 @@ function tabbed_profile_init() {
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('profile', 'tabbed_profile_page_handler');
 
-	elgg_extend_view('html_head/extend', 'profile/metatags');
+	elgg_extend_view('page/elements/head', 'profile/metatags');
 	elgg_extend_view('css/elgg', 'profile/css');
 
 	// Register actions
@@ -122,7 +122,7 @@ function tabbed_profile_layout_page($user, $selection = 'activity') {
  * @return string User URL
  */
 function tabbed_profile_url($user) {
-	return elgg_get_site_url() . "pg/profile/" . $user->username;
+	return elgg_get_site_url() . "profile/" . $user->username;
 }
 
 /**
