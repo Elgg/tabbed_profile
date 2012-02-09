@@ -170,7 +170,7 @@ function tabbed_profile_override_avatar_url($hook, $entity_type, $return_value, 
 	try {
 		if ($filehandler->exists()) {
 			$join_date = $user->getTimeCreated();
-			return "mod/profile/icondirect.php?lastcache=$icon_time&joindate=$join_date&guid=$user_guid&size=$size";
+			return "mod/tabbed_profile/icondirect.php?lastcache=$icon_time&joindate=$join_date&guid=$user_guid&size=$size";
 		}
 	} catch (InvalidParameterException $e) {
 		elgg_log("Unable to get profile icon for user with GUID $user_guid", 'ERROR');
