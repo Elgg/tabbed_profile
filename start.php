@@ -20,6 +20,10 @@ function tabbed_profile_init() {
 	// will dictate the URL for all ElggUser objects
 	elgg_register_entity_url_handler('user', 'all', 'tabbed_profile_url');
 
+	// Override avatar handler
+	elgg_register_plugin_hook_handler('entity:icon:url', 'user', 'tabbed_profile_override_avatar_url');
+	elgg_unregister_plugin_hook_handler('entity:icon:url', 'user', 'user_avatar_hook');
+
 	elgg_register_simplecache_view('icon/user/default/tiny');
 	elgg_register_simplecache_view('icon/user/default/topbar');
 	elgg_register_simplecache_view('icon/user/default/small');
@@ -123,6 +127,57 @@ function tabbed_profile_layout_page($user, $selection = 'activity') {
  */
 function tabbed_profile_url($user) {
 	return elgg_get_site_url() . "profile/" . $user->username;
+}
+
+/**
+ * Use a URL for avatars that avoids loading Elgg engine for better performance
+ *
+ * @param string $hook
+ * @param string $entity_type
+ * @param string $return_value
+ * @param array  $params
+ * @return string
+ */
+function tabbed_profile_override_avatar_url($hook, $entity_type, $return_value, $params) {
+
+	// if someone already set this, quit
+	if ($return_value) {
+		return null;
+	}
+
+	$user = $params['entity'];
+	$size = $params['size'];
+	
+	if (!elgg_instanceof($user, 'user')) {
+		return null;
+	}
+
+	$user_guid = $user->getGUID();
+	$icon_time = $user->icontime;
+
+	if (!$icon_time) {
+		return "_graphics/icons/user/default{$size}.gif";
+	}
+
+	if ($user->isBanned()) {
+		return null;
+	}
+
+	$filehandler = new ElggFile();
+	$filehandler->owner_guid = $user_guid;
+	$filehandler->setFilename("profile/{$user_guid}{$size}.jpg");
+
+	try {
+		if ($filehandler->exists()) {
+			$join_date = $user->getTimeCreated();
+			return "mod/tabbed_profile/icondirect.php?lastcache=$icon_time&joindate=$join_date&guid=$user_guid&size=$size";
+		}
+	} catch (InvalidParameterException $e) {
+		elgg_log("Unable to get profile icon for user with GUID $user_guid", 'ERROR');
+		return "_graphics/icons/default/$size.png";
+	}
+
+	return null;
 }
 
 /**
