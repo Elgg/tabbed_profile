@@ -27,6 +27,6 @@ foreach ($vars['tabs'] as $tab) {
 }
 
 echo elgg_view_menu('profile_tabs', array(
-	'order_by' => 'priority',
+	'sort_by' => 'priority',
 	'class' => 'elgg-menu-hz elgg-menu-filter'
 ));
