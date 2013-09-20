@@ -82,12 +82,17 @@ function tabbed_profile_page_handler($page) {
 			break;
 
 		default:
+
+			// allow other plugins to add tabs
+			$tabs = array('activity', 'details', 'friends', 'groups', 'commentwall');
+			$tabs = elgg_trigger_plugin_hook('tabs', 'profile', array('user' => $user), $tabs);
+
 			if (isset($page[1])) {
 				$section = $page[1];
 			} else {
-				$section = 'activity';
+				$section = $tabs[0];
 			}
-			$content = tabbed_profile_layout_page($user, $section);
+			$content = tabbed_profile_layout_page($user, $section, $tabs);
 			$body = elgg_view_layout('one_column', array(
 				'content' => $content,
 				'class' => 'tabbed-profile',
@@ -103,14 +108,11 @@ function tabbed_profile_page_handler($page) {
  *
  * @param ElggUser $user      The user
  * @param string   $selection Selected tab
+ * @param array	   $tabs	  An array of tab names
  *
  * @return string
  */
-function tabbed_profile_layout_page($user, $selection = 'activity') {
-
-	// allow other plugins to add tabs
-	$tabs = array('activity', 'details', 'friends', 'groups', 'commentwall');
-	$tabs = elgg_trigger_plugin_hook('tabs', 'profile', array('user' => $user), $tabs);
+function tabbed_profile_layout_page($user, $selection = 'activity', $tabs = array()) {
 
 	return elgg_view('profile/layout', array(
 		'entity' => $user,
