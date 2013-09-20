@@ -16,6 +16,9 @@ $url = $user->getURL();
 $tabs = array();
 $priority = 100;
 foreach ($vars['tabs'] as $tab) {
+	if (!elgg_view_exists("profile/tabs/$tab")) {
+		continue;
+	}
 	elgg_register_menu_item('profile_tabs', array(
 		'name' => $tab,
 		'text' => elgg_echo("profile:$tab"),
