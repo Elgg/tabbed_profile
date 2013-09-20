@@ -95,7 +95,7 @@ function tabbed_profile_page_handler($page) {
 			break;
 	}
 
-	echo elgg_view_page($title, $body);
+	echo elgg_view_page($user->name, $body);
 	return true;
 }
 
