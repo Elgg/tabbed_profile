@@ -96,6 +96,7 @@ function tabbed_profile_page_handler($page) {
 	}
 
 	echo elgg_view_page($title, $body);
+	return true;
 }
 
 /**
