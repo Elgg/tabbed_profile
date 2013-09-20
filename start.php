@@ -78,7 +78,7 @@ function tabbed_profile_page_handler($page) {
 		case 'edit':
 			// use for the core profile edit page
 			require $CONFIG->path . 'pages/profile/edit.php';
-			return;
+			return true;
 			break;
 
 		default:
