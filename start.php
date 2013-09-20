@@ -78,7 +78,7 @@ function tabbed_profile_page_handler($page) {
 		case 'edit':
 			// use for the core profile edit page
 			require $CONFIG->path . 'pages/profile/edit.php';
-			return;
+			return true;
 			break;
 
 		default:
@@ -95,7 +95,8 @@ function tabbed_profile_page_handler($page) {
 			break;
 	}
 
-	echo elgg_view_page($title, $body);
+	echo elgg_view_page($user->name, $body);
+	return true;
 }
 
 /**
