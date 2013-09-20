@@ -19,7 +19,7 @@ foreach ($vars['tabs'] as $tab) {
 	elgg_register_menu_item('profile_tabs', array(
 		'name' => $tab,
 		'text' => elgg_echo("profile:$tab"),
-		'url' => "$url/$tab",
+		'href' => "$url/$tab",
 		'selected' => $tab == $vars['selection'],
 		'priority' => $priority
 	));
